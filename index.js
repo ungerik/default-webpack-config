@@ -2,7 +2,8 @@ var path = require("path");
 var webpack = require("webpack");
 
 
-function makeStandardConfig(projectDir, appEntry) {
+function makeStandardConfig(projectDir, appEntry, appOutput) {
+	var appOutput = appOutput || "app.js";
 	var outputPath = process.env.NODE_ENV === "production" ? "./dist" : "./build";
 	console.log("Webpack", path.join(projectDir, outputPath));
 
@@ -32,12 +33,13 @@ function makeStandardConfig(projectDir, appEntry) {
 
 		output: {
 			path: outputPath,
-			filename: "app.js"
+			filename: appOutput
 		},
 
 		module: {
 			loaders: [
-				{test: /\.jsx?$/, exclude: /(node_modules|bower_components)/, loaders: [/*"react-hot",*/ "babel"]},
+				{test: /\.js$/, exclude: /(node_modules|bower_components)/, loaders: [/*"react-hot",*/ "babel"]},
+				{test: /\.jsx$/, loaders: [/*"react-hot",*/ "babel"]},
 				{test: /\.css$/, loader: "style!css"},
 				{test: /\.(woff|woff2)$/, loader: "url?&mimetype=application/font-woff"},
 				{test: /glyphicons(.*)\.(ttf|eot|svg)$/, loader: "file?name=fonts/[name].[ext]"}
