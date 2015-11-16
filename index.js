@@ -2,15 +2,15 @@ var path = require("path");
 var webpack = require("webpack");
 
 
-function makeStandardConfig(appEntry) {
+function makeStandardConfig(projectDir, appEntry) {
 	var outputPath = process.env.NODE_ENV === "production" ? "./dist" : "./build";
-	console.log("Webpack", outputPath);
+	console.log("Webpack", path.join(projectDir, outputPath));
 
 	return {
 		addLib: function(name, filename, parse) {
 			this.entry.libs.push(name);
 			if (filename) {
-				filename = path.join(__dirname, filename);
+				filename = path.join(projectDir, filename);
 				this.resolve.alias[name] = filename;
 				if (!parse) {
 					this.module.noParse.push(new RegExp("^" + filename + "$"));
