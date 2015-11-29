@@ -1,5 +1,5 @@
 {
-  "name": "webpack-config",
+  "name": "default-webpack-config",
   "version": "1.0.0",
   "description": "Default webpack configuration for modern projects",
   "main": "index.js",
