@@ -46,6 +46,7 @@ function makeStandardConfig(projectDir, appEntry, appOutput) {
 		},
 
 		resolve: {
+			root: [__dirname],
 			extensions: ["", ".js", ".jsx"],
 			modulesDirectories: ["node_modules", "bower_components"],
 			alias: {} // will be filled by addLib()
