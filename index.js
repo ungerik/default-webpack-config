@@ -86,7 +86,7 @@ function runHotDevServer(webpackConfig, host, port) {
 
 
 	app.use(require("webpack-dev-middleware")(compiler, {
-		noInfo: false,
+		noInfo: true,
 		publicPath: webpackConfig.output.publicPath
 	}));
 
