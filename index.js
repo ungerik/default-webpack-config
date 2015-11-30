@@ -15,7 +15,8 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 	options.libsFilename = options.libsFilename || "libs.js";
 	options.modulesDirectories = options.modulesDirectories || ["node_modules", "bower_components"];
 
-	console.log("Webpack", path.join(projectDir, outputPath));
+	console.log("NODE_ENV:", process.env.NODE_ENV);
+	console.log("Webpack:", path.join(projectDir, outputPath));
 
 	return {
 		addLib: function(name, filename, parse) {
@@ -84,6 +85,8 @@ function runHotDevServer(webpackConfig, host, port) {
 	host = host || "localhost";
 	port = port || 8080;
 
+	console.log("NODE_ENV:", process.env.NODE_ENV);
+
 	var express = require("express");
 	var morgan = require("morgan");
 
@@ -127,6 +130,8 @@ function runHotDevServer(webpackConfig, host, port) {
 function runDevServer(webpackConfig, host, port) {
 	host = host || "localhost";
 	port = port || 8080;
+
+	console.log("NODE_ENV:", process.env.NODE_ENV);
 
 	var express = require("express");
 	var morgan = require("morgan");
