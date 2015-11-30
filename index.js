@@ -113,13 +113,45 @@ function runHotDevServer(webpackConfig, host, port) {
 	});
 
 
-	app.listen(8080, "0.0.0.0", function(err) {
+	app.listen(port, host, function(err) {
 		if (err) {
 			console.error(err);
 			return;
 		}
 
-		console.log("Listening at http://0.0.0.0:8080");
+		console.log("Listening at http://" + host + ":" + port);
+	});
+}
+
+
+function runDevServer(webpackConfig, host, port) {
+	host = host || "localhost";
+	port = port || 8080;
+
+	var express = require("express");
+	var morgan = require("morgan");
+
+	var app = express();
+
+
+	app.use(morgan("dev"));
+
+
+	app.use(express.static(webpackConfig.output.path));
+
+
+	app.get("/", function(req, res) {
+		res.sendFile(path.join(webpackConfig.output.path, "index.html"));
+	});
+
+
+	app.listen(port, host, function(err) {
+		if (err) {
+			console.error(err);
+			return;
+		}
+
+		console.log("Listening at http://" + host + ":" + port);
 	});
 }
 
@@ -127,5 +159,6 @@ function runHotDevServer(webpackConfig, host, port) {
 module.exports = {
 	makeStandardConfig: makeStandardConfig,
 	makeStandardHotConfig: makeStandardHotConfig,
-	runHotDevServer: runHotDevServer
+	runHotDevServer: runHotDevServer,
+	runDevServer: runDevServer
 };
