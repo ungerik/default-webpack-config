@@ -85,8 +85,6 @@ function runHotDevServer(webpackConfig, host, port) {
 	host = host || "localhost";
 	port = port || 8080;
 
-	console.log("NODE_ENV:", process.env.NODE_ENV);
-
 	var express = require("express");
 	var morgan = require("morgan");
 
@@ -130,8 +128,6 @@ function runHotDevServer(webpackConfig, host, port) {
 function runDevServer(webpackConfig, host, port) {
 	host = host || "localhost";
 	port = port || 8080;
-
-	console.log("NODE_ENV:", process.env.NODE_ENV);
 
 	var express = require("express");
 	var morgan = require("morgan");
