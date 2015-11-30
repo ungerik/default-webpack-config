@@ -4,8 +4,10 @@ var webpack = require("webpack");
 
 function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 	if (!outputPath) {
-		outputPath = process.env.NODE_ENV === "production" ? path.join(projectDir, "dist") : path.join(projectDir, "build");
+		outputPath = process.env.NODE_ENV === "production" ? "dist" : "build";
 	}
+	outputPath = path.isAbsolute(outputPath) ? outputPath : path.join(projectDir, outputPath);
+
 	options = options || {};
 	options.devtool = options.devtool || "inline-source-map";
 	options.publicPath = options.publicPath || "/";
