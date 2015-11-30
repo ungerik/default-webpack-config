@@ -120,7 +120,7 @@ function runHotDevServer(webpackConfig, host, port) {
 			return;
 		}
 
-		console.log("Listening at http://" + host + ":" + port);
+		console.log("Listening hot at http://" + host + ":" + port);
 	});
 }
 
