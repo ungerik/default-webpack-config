@@ -5,7 +5,7 @@ var webpack = require("webpack");
 function makeStandardConfig(projectDir, appEntry, appOutput) {
 	var appOutput = appOutput || "app.js";
 	// var outputPath = process.env.NODE_ENV === "production" ? "./dist" : "./build";
-	var outputPath = process.env.NODE_ENV === "production" ? path.join(__dirname, "dist") : path.join(__dirname, "build");
+	var outputPath = process.env.NODE_ENV === "production" ? path.join(projectDir, "dist") : path.join(projectDir, "build");
 	console.log("Webpack", path.join(projectDir, outputPath));
 
 	return {
@@ -46,7 +46,7 @@ function makeStandardConfig(projectDir, appEntry, appOutput) {
 		},
 
 		resolve: {
-			root: [__dirname],
+			root: [projectDir],
 			extensions: ["", ".js", ".jsx"],
 			modulesDirectories: ["node_modules", "bower_components"],
 			alias: {} // will be filled by addLib()
