@@ -2,10 +2,17 @@ var path = require("path");
 var webpack = require("webpack");
 
 
-function makeStandardConfig(projectDir, appEntry, appOutput) {
-	var appOutput = appOutput || "app.js";
-	// var outputPath = process.env.NODE_ENV === "production" ? "./dist" : "./build";
-	var outputPath = process.env.NODE_ENV === "production" ? path.join(projectDir, "dist") : path.join(projectDir, "build");
+function makeStandardConfig(projectDir, appEntry, outputPath, options) {
+	if (!outputPath) {
+		outputPath = process.env.NODE_ENV === "production" ? path.join(projectDir, "dist") : path.join(projectDir, "build");
+	}
+	options = options || {};
+	options.devtool = options.devtool || "inline-source-map";
+	options.publicPath = options.publicPath || "/";
+	options.appFilename = options.appFilename || "app.js";
+	options.libsFilename = options.libsFilename || "libs.js";
+	options.modulesDirectories = options.modulesDirectories || ["node_modules", "bower_components"];
+
 	console.log("Webpack", path.join(projectDir, outputPath));
 
 	return {
@@ -20,8 +27,7 @@ function makeStandardConfig(projectDir, appEntry, appOutput) {
 			}
 		},
 
-		// devtool: "eval",
-		devtool: "inline-source-map",
+		devtool: options.devtool,
 
 		entry: {
 			app: [appEntry],
@@ -30,8 +36,8 @@ function makeStandardConfig(projectDir, appEntry, appOutput) {
 
 		output: {
 			path: outputPath,
-			publicPath: "/",
-			filename: appOutput
+			publicPath: options.publicPath,
+			filename: options.appFilename
 		},
 
 		module: {
@@ -48,20 +54,20 @@ function makeStandardConfig(projectDir, appEntry, appOutput) {
 		resolve: {
 			root: [projectDir],
 			extensions: ["", ".js", ".jsx"],
-			modulesDirectories: ["node_modules", "bower_components"],
+			modulesDirectories: options.modulesDirectories,
 			alias: {} // will be filled by addLib()
 		},
 
 		plugins: [
-			new webpack.optimize.CommonsChunkPlugin("libs", "libs.js"),
+			new webpack.optimize.CommonsChunkPlugin("libs", options.libsFilename),
 			new webpack.optimize.OccurenceOrderPlugin()
 		]
 	};
 }
 
 
-function makeStandardHotConfig(projectDir, appEntry, appOutput) {
-	var config = makeStandardConfig(projectDir, appEntry, appOutput);
+function makeStandardHotConfig(projectDir, appEntry, outputPath, options) {
+	var config = makeStandardConfig(projectDir, appEntry, outputPath, options);
 	// var hotMiddlewareScript = "webpack-hot-middleware/client?reload=true&timeout=2000";
 	var hotMiddlewareScript = "webpack-hot-middleware/client?reload=true";
 	config.entry.app.push(hotMiddlewareScript);
@@ -114,6 +120,7 @@ function runHotDevServer(webpackConfig, host, port) {
 		console.log("Listening at http://0.0.0.0:8080");
 	});
 }
+
 
 module.exports = {
 	makeStandardConfig: makeStandardConfig,
