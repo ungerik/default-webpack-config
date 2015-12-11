@@ -72,7 +72,7 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 function makeStandardHotConfig(projectDir, appEntry, outputPath, options) {
 	var config = makeStandardConfig(projectDir, appEntry, outputPath, options);
 	// var hotMiddlewareScript = "webpack-hot-middleware/client?reload=true&timeout=2000";
-	var hotMiddlewareScript = "webpack-hot-middleware/client?reload=true";
+	var hotMiddlewareScript = "webpack-hot-middleware/client?reload=true&timeout=10000";
 	config.entry.app.push(hotMiddlewareScript);
 	config.entry.libs.push(hotMiddlewareScript);
 	config.plugins.push(new webpack.HotModuleReplacementPlugin());
