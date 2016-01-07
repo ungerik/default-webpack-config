@@ -30,6 +30,12 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 			}
 		},
 
+		print: function() {
+			console.log(JSON.stringify(this, function(key, value) {
+				return (value instanceof RegExp) ? "RegExp(" + value.source + ")" : value;
+			}, 4));
+		},
+
 		devtool: options.devtool,
 
 		entry: {
