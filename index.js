@@ -30,6 +30,11 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 			}
 		},
 
+		addLibES6: function(name) {
+			this.entry.libs.push(name);
+			this.module.loaders.push({test: new RegExp(name + "/(.*)\.js$"), loader: "babel"});
+		},
+
 		print: function() {
 			console.log(JSON.stringify(this, function(key, value) {
 				return (value instanceof RegExp) ? "RegExp(" + value.source + ")" : value;
