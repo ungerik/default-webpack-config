@@ -1,7 +1,7 @@
 {
-  "name": "default-webpack-config",
+  "name": "react-webpack-config",
   "version": "1.0.0",
-  "description": "Default webpack configuration for modern projects",
+  "description": "Default webpack configuration for state of the art Reactjs projects",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,8 @@
     "url": "git+https://github.com/ungerik/webpack-config.git"
   },
   "keywords": [
-    "webpack"
+    "webpack",
+	"reactjs"
   ],
   "author": "Erik Unger <erik@erikunger.com>",
   "license": "MIT",
