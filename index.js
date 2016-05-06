@@ -13,7 +13,7 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 	options.publicPath = options.publicPath || "/";
 	options.appFilename = options.appFilename || "app.js";
 	options.libsFilename = options.libsFilename || "libs.js";
-	options.modulesDirectories = options.modulesDirectories || ["node_modules", "bower_components"];
+	options.modulesDirectories = options.modulesDirectories || ["src", "source", "node_modules", "bower_components"];
 
 	console.log("NODE_ENV:", process.env.NODE_ENV);
 	console.log("Webpack:", path.join(projectDir, outputPath));
