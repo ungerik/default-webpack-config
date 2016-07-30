@@ -19,7 +19,7 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 	options.publicPath = options.publicPath || "/";
 
 	// https://webpack.github.io/docs/configuration.html#resolve-modulesdirectories
-	options.modulesDirectories = options.modulesDirectories || ["node_modules", "bower_components"];
+	options.modulesDirectories = options.modulesDirectories || ["src", "source", "node_modules", "bower_components"];
 
 	console.log("NODE_ENV:", process.env.NODE_ENV);
 	console.log("Webpack:", path.join(projectDir, outputPath));
