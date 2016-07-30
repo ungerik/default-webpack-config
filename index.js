@@ -9,10 +9,16 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 	outputPath = path.isAbsolute(outputPath) ? outputPath : path.join(projectDir, outputPath);
 
 	options = options || {};
-	options.devtool = options.devtool || "inline-source-map";
-	options.publicPath = options.publicPath || "/";
 	options.appFilename = options.appFilename || "app.js";
 	options.libsFilename = options.libsFilename || "libs.js";
+
+	// https://webpack.github.io/docs/configuration.html#devtool
+	options.devtool = options.devtool || "inline-source-map";
+
+	// https://webpack.github.io/docs/configuration.html#output-publicpath
+	options.publicPath = options.publicPath || "/";
+
+	// https://webpack.github.io/docs/configuration.html#resolve-modulesdirectories
 	options.modulesDirectories = options.modulesDirectories || ["node_modules", "bower_components"];
 
 	console.log("NODE_ENV:", process.env.NODE_ENV);
@@ -59,6 +65,7 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 				{test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: "babel"},
 				{test: /\.jsx$/, loader: "babel"},
 				{test: /\.css$/, loader: "style!css"},
+				{test: /\.svg$/, loader: "svg"},
 				{test: /\.(woff|woff2)$/, loader: "url?&mimetype=application/font-woff"},
 				{test: /glyphicons(.*)\.(ttf|eot|svg)$/, loader: "file?name=fonts/[name].[ext]"}
 			],
