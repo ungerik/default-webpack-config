@@ -1,10 +1,27 @@
+/*eslint-env node */
+"use strict";
+
+var fs = require("fs");
 var path = require("path");
 var webpack = require("webpack");
 
 
+var NODE_ENV_PRODUCTION = process.env.NODE_ENV === "production";
+
+
+function isDir(path) {
+	try {
+		return fs.statSync(path).isDirectory();
+	}
+	catch (e) {
+		return false;
+	}
+}
+
+
 function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 	if (!outputPath) {
-		outputPath = process.env.NODE_ENV === "production" ? "dist" : "build";
+		outputPath = NODE_ENV_PRODUCTION ? "dist" : "build";
 	}
 	outputPath = path.isAbsolute(outputPath) ? outputPath : path.join(projectDir, outputPath);
 
@@ -13,13 +30,29 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 	options.libsFilename = options.libsFilename || "libs.js";
 
 	// https://webpack.github.io/docs/configuration.html#devtool
-	options.devtool = options.devtool || "inline-source-map";
+	options.devtool = options.devtool || NODE_ENV_PRODUCTION ? null : "inline-source-map";
 
 	// https://webpack.github.io/docs/configuration.html#output-publicpath
 	options.publicPath = options.publicPath || "/";
 
 	// https://webpack.github.io/docs/configuration.html#resolve-modulesdirectories
 	options.modulesDirectories = options.modulesDirectories || ["src", "source", "node_modules", "bower_components"];
+
+	// https://github.com/webpack/docs/wiki/list-of-plugins#environmentplugin
+	options.environmentVars = options.environmentVars || ["NODE_ENV"];
+
+	// https://github.com/webpack/docs/wiki/list-of-plugins#uglifyjsplugin
+	var uglifyPlugin = NODE_ENV_PRODUCTION ?
+		new webpack.optimize.UglifyJsPlugin({compress: {warnings: false}, mangle: false, comments: false})
+	:
+		new webpack.BannerPlugin("development build");
+
+	// https://github.com/babel/babel-loader/blob/master/README.md
+	options.babel = options.babel || {cacheDirectory: path.join(projectDir, "babel-cache")};
+
+	if (options.babel.cacheDirectory && !isDir(options.babel.cacheDirectory)) {
+		fs.mkdirSync(options.babel.cacheDirectory);
+	}
 
 	console.log("NODE_ENV:", process.env.NODE_ENV);
 	console.log("Webpack:", path.join(projectDir, outputPath));
@@ -38,7 +71,7 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 
 		addLibES6: function(name) {
 			this.entry.libs.push(name);
-			this.module.loaders.push({test: new RegExp(name + "/(.*)\.js$"), loader: "babel"});
+			this.module.loaders.push({test: new RegExp(name + "/(.*)\.js$"), loader: "babel", query: options.babel});
 		},
 
 		print: function() {
@@ -57,13 +90,14 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 		output: {
 			path: outputPath,
 			publicPath: options.publicPath,
-			filename: options.appFilename
+			filename: options.appFilename,
+			pathinfo: !NODE_ENV_PRODUCTION,
 		},
 
 		module: {
 			loaders: [
-				{test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: "babel"},
-				{test: /\.jsx$/, loader: "babel"},
+				{test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: "babel", query: options.babel},
+				{test: /\.jsx$/, loader: "babel", query: options.babel},
 				{test: /\.css$/, loader: "style!css"},
 				{test: /\.svg$/, loader: "svg"},
 				{test: /\.(woff|woff2)$/, loader: "url?&mimetype=application/font-woff"},
@@ -80,8 +114,12 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 		},
 
 		plugins: [
+			new webpack.NoErrorsPlugin(),
+			new webpack.EnvironmentPlugin(options.environmentVars),
 			new webpack.optimize.CommonsChunkPlugin("libs", options.libsFilename),
-			new webpack.optimize.OccurenceOrderPlugin()
+			new webpack.optimize.OccurenceOrderPlugin(true),
+			new webpack.optimize.DedupePlugin(),
+			uglifyPlugin
 		]
 	};
 }
