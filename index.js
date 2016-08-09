@@ -99,7 +99,6 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 				{test: /\.js$/, exclude: /(node_modules|bower_components)/, loader: "babel", query: options.babel},
 				{test: /\.jsx$/, loader: "babel", query: options.babel},
 				{test: /\.css$/, loader: "style!css"},
-				{test: /\.svg$/, loader: "svg"},
 				{test: /\.(woff|woff2)$/, loader: "url?&mimetype=application/font-woff"},
 				{test: /glyphicons(.*)\.(ttf|eot|svg)$/, loader: "file?name=fonts/[name].[ext]"}
 			],
