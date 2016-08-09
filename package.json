@@ -36,10 +36,10 @@
     "redbox-react": ">=1.2.0"
   },
   "dependencies": {
-    "express": "^4.13.3",
-    "morgan": "^1.6.1",
-    "webpack": "^1.12.10",
-    "webpack-dev-middleware": "^1.4.0",
-    "webpack-hot-middleware": "^2.9.1"
+    "express": ">=4.13.3",
+    "morgan": ">=1.6.1",
+    "webpack": ">=1.12.10",
+    "webpack-dev-middleware": ">=1.4.0",
+    "webpack-hot-middleware": ">=2.9.1"
   }
 }
