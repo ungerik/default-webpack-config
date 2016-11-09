@@ -55,6 +55,7 @@ function makeStandardConfig(projectDir, appEntry, outputPath, options) {
 	}
 
 	console.log("NODE_ENV:", process.env.NODE_ENV);
+	console.log("BABEL_ENV:", process.env.BABEL_ENV);
 	console.log("Webpack:", path.join(projectDir, outputPath));
 
 	return {
