@@ -1,6 +1,6 @@
 {
   "name": "react-webpack-config",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Default webpack configuration for state of the art Reactjs projects",
   "main": "index.js",
   "scripts": {
